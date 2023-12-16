@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.post('/create-cat', catControllers.createCat)
 
+router.get('/', catControllers.getAllCat)
+
 export const catRoutes = router;

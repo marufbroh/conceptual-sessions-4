@@ -6,7 +6,14 @@ const createCat = async (catData: TCat) => {
     return result;
 }
 
+const getAllCat = async () => {
+    const result = await Cat.find({}).exec();
+    return result;
+}
+
+
 export const catServices = {
     createCat,
+    getAllCat,
 
 }

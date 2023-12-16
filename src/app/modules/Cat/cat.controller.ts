@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
-import { catServices } from "./cat.server";
+import { catServices } from "./cat.service";
 
 const createCat = async (req: Request, res: Response) => {
     try {
@@ -10,8 +11,23 @@ const createCat = async (req: Request, res: Response) => {
             message: "Cat is created successfully",
             data: result
         })
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "Something went wrong",
+            error: error
+        })
+    }
+}
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getAllCat = async (req: Request, res: Response) => {
+    try {
+        const result = await catServices.getAllCat();
+        res.status(200).json({
+            success: true,
+            message: "Cats are retried successfully",
+            data: result
+        })
     } catch (error: any) {
         res.status(500).json({
             success: false,
@@ -23,4 +39,5 @@ const createCat = async (req: Request, res: Response) => {
 
 export const catControllers = {
     createCat,
+    getAllCat,
 }
