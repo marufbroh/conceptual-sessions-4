@@ -8,8 +8,12 @@ export type TCat = {
     secret?: string;
 };
 
-export type TCatMethods = {
-    generateId(): Promise<void>
-}
+// export type TCatMethods = {
+//     generateId(): Promise<void>
+// }
 
-export type CatModel = Model<TCat, Record<string, never>, TCatMethods>
+// export type CatModel = Model<TCat, Record<string, never>, TCatMethods>
+
+export interface ICatModel extends Model<TCat> {
+    generateId(): Promise<void>
+};
