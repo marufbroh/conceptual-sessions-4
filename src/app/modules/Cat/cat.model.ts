@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { TCat } from "./cat.interface";
+import { CatModel, TCat, TCatMethods } from "./cat.interface";
 
-const catSchema = new Schema<TCat>({
+const catSchema = new Schema<TCat, CatModel, TCatMethods>({
     id: {
         type: Number,
         required: true,
@@ -24,4 +24,16 @@ const catSchema = new Schema<TCat>({
 })
 
 
-export const Cat = model<TCat>('Cat', catSchema)
+// instance method
+catSchema.methods.generateId = async function () {
+    try {
+        const lastCat = await Cat.findOne().sort({ _id: -1 }).exec();
+        if (!lastCat) return 1;
+        return lastCat.id + 1;
+    } catch (error) {
+        throw new Error("Cat't generate unique id")
+    }
+}
+
+
+export const Cat = model<TCat, CatModel>('Cat', catSchema)
