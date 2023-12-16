@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 import { CatModel, ICatModel, TCat, TCatMethods } from "./cat.interface";
+import bcrypt from 'bcrypt';
+import config from "../../config";
 
 // const catSchema = new Schema<TCat, CatModel, TCatMethods>({
 //     id: {
@@ -60,6 +62,19 @@ const catSchema = new Schema<TCat, ICatModel>({
         type: String
     }
 });
+
+
+// pre middleware hook
+catSchema.pre("save", async function (next) {
+    this.secret = await bcrypt.hash(this.secret, Number(config.bcrypt_salt_rounds))
+    next();
+})
+
+// post middleware hook
+catSchema.post("save", async function (doc, next) {
+    doc.secret = ""
+    next();
+})
 
 
 // static methods
